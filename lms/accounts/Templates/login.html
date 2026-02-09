@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LMS | Login</title>
+
+<style>
+:root{
+    --bg-main:#0f172a;
+    --bg-soft:#1e293b;
+    --bg-card:#020617;
+    --border:#334155;
+    --primary:#38bdf8;
+    --primary-2:#60a5fa;
+    --text:#e5e7eb;
+    --muted:#94a3b8;
+    --error:#f87171;
+}
+
+*{
+    box-sizing:border-box;
+    font-family: "Inter","Segoe UI",sans-serif;
+}
+
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+        radial-gradient(circle at top left,#1e293b,transparent 40%),
+        radial-gradient(circle at bottom right,#020617,transparent 40%),
+        linear-gradient(135deg,var(--bg-main),var(--bg-soft));
+    color:var(--text);
+}
+
+/* ===== Card ===== */
+.card{
+    width:390px;
+    padding:36px;
+    border-radius:18px;
+    background: linear-gradient(180deg,#020617,#020617);
+    border:1px solid var(--border);
+    box-shadow:0 30px 60px rgba(0,0,0,0.55);
+    position:relative;
+    transition: transform .4s ease, box-shadow .4s ease;
+}
+
+/* Gradient border on hover */
+.card::before{
+    content:"";
+    position:absolute;
+    inset:-1px;
+    border-radius:18px;
+    background: linear-gradient(120deg,transparent,rgba(56,189,248,.6),transparent);
+    opacity:0;
+    transition:.4s;
+    pointer-events:none;
+}
+
+.card:hover{
+    transform: translateY(-6px) scale(1.01);
+    box-shadow:0 40px 80px rgba(0,0,0,0.65);
+}
+
+.card:hover::before{
+    opacity:1;
+}
+
+/* Header */
+.card h2{
+    margin:0 0 6px;
+    font-size:26px;
+    font-weight:600;
+}
+
+.subtitle{
+    font-size:14px;
+    color:var(--muted);
+    margin-bottom:28px;
+}
+
+/* ===== Floating Inputs ===== */
+.field{
+    position:relative;
+    margin-bottom:20px;
+}
+
+.field input{
+    width:100%;
+    padding:16px 14px 16px 44px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:#020617;
+    color:var(--text);
+    font-size:14px;
+    outline:none;
+    transition:.25s;
+}
+
+.field input:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px rgba(56,189,248,.25);
+}
+
+/* Label */
+.field label{
+    position:absolute;
+    left:44px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:14px;
+    color:var(--muted);
+    pointer-events:none;
+    transition:.25s;
+}
+
+/* Icon */
+.icon{
+    position:absolute;
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:18px;
+    color:#64748b;
+}
+
+/* Floating effect */
+.field input:focus + label,
+.field input:not(:placeholder-shown) + label{
+    top:-8px;
+    font-size:12px;
+    background:#020617;
+    padding:0 6px;
+    color:var(--primary);
+}
+
+/* ===== Button ===== */
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background: linear-gradient(135deg,var(--primary),var(--primary-2));
+    color:#020617;
+    font-weight:600;
+    font-size:15px;
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+    transition:.3s;
+}
+
+/* Shine animation */
+button::after{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,.4),
+        transparent
+    );
+    transition:.6s;
+}
+
+button:hover::after{
+    left:100%;
+}
+
+button:hover{
+    transform: translateY(-1px);
+}
+
+/* Error */
+.error{
+    background:rgba(248,113,113,.15);
+    border:1px solid rgba(248,113,113,.3);
+    color:var(--error);
+    padding:10px;
+    border-radius:8px;
+    font-size:13px;
+    margin-bottom:16px;
+}
+
+/* Footer */
+.small-text{
+    margin-top:22px;
+    text-align:center;
+    font-size:14px;
+    color:var(--muted);
+}
+
+.small-text a{
+    color:var(--primary);
+    text-decoration:none;
+}
+
+.small-text a:hover{
+    text-decoration:underline;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>Welcome Back</h2>
+    <div class="subtitle">Login to your LMS dashboard</div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="error">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="field">
+            <span class="icon">👤</span>
+            <input type="text" name="username" required placeholder=" ">
+            <label>Username</label>
+        </div>
+
+        <div class="field">
+            <span class="icon">🔒</span>
+            <input type="password" name="password" required placeholder=" ">
+            <label>Password</label>
+        </div>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <div class="small-text">
+        Don’t have an account?
+        <a href="{% url 'signup' %}">Create account</a>
+    </div>
+</div>
+
+</body>
+</html>
